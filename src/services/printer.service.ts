@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { environment } from '../environment/environment.dev';
 
 @Injectable({ providedIn: 'root' })
 export class PrinterService {
 
-  private api = 'http://localhost:3000/send';
+  private api = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
