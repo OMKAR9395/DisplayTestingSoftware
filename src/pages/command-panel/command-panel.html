@@ -1,0 +1,54 @@
+<!-- <div class="panel">
+
+  <div class="alert success" *ngIf="successMsg">
+    ✅ {{ successMsg }}
+  </div>
+
+  <div class="alert error" *ngIf="errorMsg">
+    ❌ {{ errorMsg }}
+  </div>
+
+  <div class="loader" *ngIf="loading">
+    ⏳ Sending command to printer...
+  </div>
+
+  <div class="card" *ngFor="let c of commands">
+
+    <label>{{ c.label }}</label>
+
+    <div class="row">
+      <textarea [(ngModel)]="c.cmd"></textarea>
+      <button (click)="send(c.cmd)" [disabled]="loading">
+        SEND
+      </button>
+    </div>
+
+  </div>
+</div> -->
+<div class="cards-wrapper">
+
+  <div class="command-card"
+       *ngFor="let c of commands; trackBy: trackByLabel">
+
+    <div class="card-header">
+      {{ c.label }}
+    </div>
+
+    <textarea
+      [(ngModel)]="c.cmd"
+      class="cmd-textbox"
+      rows="2">
+    </textarea>
+
+    <div class="card-footer">
+      <button
+        class="send-btn"
+        (click)="send(c.cmd)"
+        [disabled]="loading">
+        SEND
+      </button>
+    </div>
+
+  </div>
+
+</div>

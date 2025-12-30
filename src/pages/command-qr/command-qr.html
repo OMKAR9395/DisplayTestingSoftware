@@ -1,0 +1,20 @@
+<h2>Command QR Codes</h2>
+
+<div class="qr-grid">
+
+  <div class="qr-card" *ngFor="let c of commands">
+
+    <h4 class="label">{{ c.label }}</h4>
+
+    <!-- EXACT CMD AS-IS -->
+    <qrcode
+      [qrdata]="c.cmd"
+      [width]="160"
+      [errorCorrectionLevel]="'M'">
+    </qrcode>
+
+    <pre class="cmd-text">{{ c.cmd }}</pre>
+
+  </div>
+
+</div>

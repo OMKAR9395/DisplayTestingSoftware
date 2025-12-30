@@ -1,0 +1,69 @@
+<!-- 
+<nav class="navbar navbar-dark bg-primary px-4">
+  <a class="navbar-brand" routerLink="">Display Software</a>
+
+  <a class="nav-link text-white" routerLink="command-panel">Command Panel</a>
+  <a class="nav-link text-white" routerLink="command-qr">Command QR</a>
+</nav>
+
+<div class="container mt-4">
+  <router-outlet></router-outlet>
+</div> -->
+<mat-toolbar color="primary" class="app-navbar">
+
+  <!-- Brand -->
+  <span class="brand" routerLink="/">Display Software</span>
+
+  <span class="spacer"></span>
+
+  <!-- Desktop Menu -->
+  <div class="nav-links desktop-only">
+
+    <button
+      mat-button
+      routerLink="/command-panel"
+      routerLinkActive="active-link"
+      [routerLinkActiveOptions]="{ exact: true }">
+      Command Panel
+    </button>
+
+    <button
+      mat-button
+      routerLink="/command-qr"
+      routerLinkActive="active-link">
+      Command QR
+    </button>
+
+  </div>
+
+  <!-- Mobile Menu -->
+  <button
+    mat-icon-button
+    class="mobile-only"
+    [matMenuTriggerFor]="menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <button
+      mat-menu-item
+      routerLink="/command-panel"
+      routerLinkActive="active-menu">
+      <mat-icon>settings</mat-icon>
+      Command Panel
+    </button>
+
+    <button
+      mat-menu-item
+      routerLink="/command-qr"
+      routerLinkActive="active-menu">
+      <mat-icon>qr_code</mat-icon>
+      Command QR
+    </button>
+  </mat-menu>
+
+</mat-toolbar>
+
+<div class="page-container">
+  <router-outlet></router-outlet>
+</div>
