@@ -25,6 +25,18 @@
 
   </div>
 </div> -->
+<div *ngIf="loading" class="loader">
+  ⏳ Processing command, please wait...
+</div>
+
+<div class="success" *ngIf="successMsg">
+  {{ successMsg }}
+</div>
+
+<div class="error" *ngIf="errorMsg">
+  {{ errorMsg }}
+</div>
+
 <div class="cards-wrapper">
 
   <div class="command-card"
@@ -45,7 +57,7 @@
         class="send-btn"
         (click)="send(c.cmd)"
         [disabled]="loading">
-        SEND
+         {{ loading ? 'Processing...' : 'Send Command' }}
       </button>
     </div>
 

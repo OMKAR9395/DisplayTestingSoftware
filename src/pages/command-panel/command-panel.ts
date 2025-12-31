@@ -19,6 +19,7 @@ export class CommandPanel {
    loading = false;
   successMsg = '';
   errorMsg = '';
+currentJobId!: number;
 
     commands: Command[] = [];
 
@@ -33,20 +34,55 @@ trackByLabel(index: number, item: Command) {
 // commands = COMMANDS;
 
   constructor(private printer: PrinterService) {}
-  send(cmd: string) {
-      this.loading = true;
-    this.successMsg = '';
-    this.errorMsg = '';
+  // send(cmd: string) {
+  //     this.loading = true;
+  //   this.successMsg = '';
+  //   this.errorMsg = '';
 
-      this.printer.sendCommand(cmd).subscribe({
-      next: res => {
+  //     this.printer.sendCommand(cmd).subscribe({
+  //     next: res => {
+  //       this.loading = false;
+  //       this.successMsg = res.message || 'Command sent successfully';
+  //     },
+  //     error: err => {
+  //       this.loading = false;
+  //       this.errorMsg = err;
+  //     }
+  //   });
+  // }
+  send(cmd: string) {
+  this.loading = true;
+  this.successMsg = '';
+  this.errorMsg = '';
+
+  this.printer.sendCommand(cmd).subscribe({
+    next: res => {
+      this.currentJobId = res.job.id;
+      this.watchStatus();   // 👈 important
+    },
+    error: err => {
+      this.loading = false;
+      this.errorMsg = '❌ Server error';
+    }
+  });
+}
+watchStatus() {
+  const interval = setInterval(() => {
+    this.printer.getJobStatus(this.currentJobId).subscribe(status => {
+
+      if (status === 'PRINTED') {
         this.loading = false;
-        this.successMsg = res.message || 'Command sent successfully';
-      },
-      error: err => {
-        this.loading = false;
-        this.errorMsg = err;
+        this.successMsg = '✅ Printed successfully';
+        clearInterval(interval);
       }
+
+      if (status === 'PRINTER_ERROR') {
+        this.loading = false;
+        this.errorMsg = '🖨 Printer not responding';
+        clearInterval(interval);
+      }
+
     });
-  }
+  }, 1000);
+}
 }

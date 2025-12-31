@@ -18,4 +18,8 @@ export class PrinterService {
       })
     );
   }
+  getJobStatus(id: number) {
+  return this.http.get<any>(`${environment.apiUrl}/jobs/${id}`);
+}
+
 }
