@@ -1,40 +1,10 @@
-<!-- <div class="panel">
+<!-- Top messages -->
+<div class="success" *ngIf="successMsg">{{ successMsg }}</div>
+<div class="error" *ngIf="errorMsg">{{ errorMsg }}</div>
 
-  <div class="alert success" *ngIf="successMsg">
-    ✅ {{ successMsg }}
-  </div>
-
-  <div class="alert error" *ngIf="errorMsg">
-    ❌ {{ errorMsg }}
-  </div>
-
-  <div class="loader" *ngIf="loading">
-    ⏳ Sending command to printer...
-  </div>
-
-  <div class="card" *ngFor="let c of commands">
-
-    <label>{{ c.label }}</label>
-
-    <div class="row">
-      <textarea [(ngModel)]="c.cmd"></textarea>
-      <button (click)="send(c.cmd)" [disabled]="loading">
-        SEND
-      </button>
-    </div>
-
-  </div>
-</div> -->
-<div *ngIf="loading" class="loader">
+<!-- Loader -->
+<div class="loader" *ngIf="loading">
   ⏳ Processing command, please wait...
-</div>
-
-<div class="success" *ngIf="successMsg">
-  {{ successMsg }}
-</div>
-
-<div class="error" *ngIf="errorMsg">
-  {{ errorMsg }}
 </div>
 
 <div class="cards-wrapper">

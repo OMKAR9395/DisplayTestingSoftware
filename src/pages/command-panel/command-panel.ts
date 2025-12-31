@@ -16,11 +16,29 @@ import { Command } from '../interface/command.interface';
   styleUrl: './command-panel.css',
 })
 export class CommandPanel {
-   loading = false;
+    loading = false;
   successMsg = '';
   errorMsg = '';
-currentJobId!: number;
+  currentJobId!: number;
+  
+  constructor(private printer: PrinterService) {}
 
+ send(cmd: string) {
+    this.loading = true;
+    this.successMsg = '';
+    this.errorMsg = '';
+
+    this.printer.sendCommand(cmd).subscribe({
+      next: res => {
+        this.currentJobId = res.job.id;
+        this.watchStatus();
+      },
+      error: () => {
+        this.loading = false;
+        this.errorMsg = '❌ Server not reachable';
+      }
+    });
+  }
     commands: Command[] = [];
 
   ngOnInit() {
@@ -31,58 +49,66 @@ currentJobId!: number;
 trackByLabel(index: number, item: Command) {
   return item.label;
 }
-// commands = COMMANDS;
-
-  constructor(private printer: PrinterService) {}
-  // send(cmd: string) {
-  //     this.loading = true;
-  //   this.successMsg = '';
-  //   this.errorMsg = '';
-
-  //     this.printer.sendCommand(cmd).subscribe({
-  //     next: res => {
-  //       this.loading = false;
-  //       this.successMsg = res.message || 'Command sent successfully';
-  //     },
-  //     error: err => {
-  //       this.loading = false;
-  //       this.errorMsg = err;
-  //     }
-  //   });
-  // }
-  send(cmd: string) {
-  this.loading = true;
-  this.successMsg = '';
-  this.errorMsg = '';
-
-  this.printer.sendCommand(cmd).subscribe({
-    next: res => {
-      this.currentJobId = res.job.id;
-      this.watchStatus();   // 👈 important
-    },
-    error: err => {
-      this.loading = false;
-      this.errorMsg = '❌ Server error';
-    }
-  });
-}
 watchStatus() {
-  const interval = setInterval(() => {
-    this.printer.getJobStatus(this.currentJobId).subscribe(status => {
+    const timer = setInterval(() => {
+      this.printer.getJobStatus(this.currentJobId).subscribe({
+        next: job => {
 
-      if (status === 'PRINTED') {
-        this.loading = false;
-        this.successMsg = '✅ Printed successfully';
-        clearInterval(interval);
-      }
+          if (job.status === 'PRINTED') {
+            this.loading = false;
+            this.successMsg = '✅ Printed successfully';
+            clearInterval(timer);
+          }
 
-      if (status === 'PRINTER_ERROR') {
-        this.loading = false;
-        this.errorMsg = '🖨 Printer not responding';
-        clearInterval(interval);
-      }
+          if (job.status === 'PRINTER_ERROR') {
+            this.loading = false;
+            this.errorMsg = '🖨 Printer not responding';
+            clearInterval(timer);
+          }
 
-    });
-  }, 1000);
-}
+        },
+        error: () => {
+          this.loading = false;
+          this.errorMsg = '⚠️ Agent not connected';
+          clearInterval(timer);
+        }
+      });
+    }, 1000); // 1 sec polling
+  }
+ 
+//   send(cmd: string) {
+//   this.loading = true;
+//   this.successMsg = '';
+//   this.errorMsg = '';
+
+//   this.printer.sendCommand(cmd).subscribe({
+//     next: res => {
+//       this.currentJobId = res.job.id;
+//       this.watchStatus();   // 👈 important
+//     },
+//     error: err => {
+//       this.loading = false;
+//       this.errorMsg = '❌ Server error';
+//     }
+//   });
+// }
+// watchStatus() {
+//   const interval = setInterval(() => {
+//     this.printer.getJobStatus(this.currentJobId).subscribe(status => {
+
+//       if (status === 'PRINTED') {
+//         this.loading = false;
+//         this.successMsg = '✅ Printed successfully';
+//         clearInterval(interval);
+//       }
+
+//       if (status === 'PRINTER_ERROR') {
+//         this.loading = false;
+//         this.errorMsg = '🖨 Printer not responding';
+//         clearInterval(interval);
+//       }
+
+//     });
+//   }, 1000);
+// }
 }

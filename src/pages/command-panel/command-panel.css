@@ -1,51 +1,4 @@
-/* .panel {
-  max-width: 900px;
-  margin: auto;
-}
 
-.card {
-  padding: 16px;
-  margin-bottom: 16px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-}
-
-.row {
-  display: flex;
-  gap: 12px;
-}
-
-textarea {
-  flex: 1;
-  min-height: 60px;
-}
-
-button {
-  width: 120px;
-}
-
-.alert {
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 4px;
-}
-
-.success {
-  background: #e6fffa;
-  color: #065f46;
-}
-
-.error {
-  background: #fee2e2;
-  color: #991b1b;
-}
-
-.loader {
-  font-weight: bold;
-  margin-bottom: 10px;
-} */
-
-/* Wrapper */
 .cards-wrapper {
   padding: 20px;
   display: grid;
@@ -132,4 +85,18 @@ button {
   .cards-wrapper {
     grid-template-columns: 1fr;
   }
+}
+.loader {
+  margin: 10px 0;
+  font-weight: bold;
+}
+
+.success {
+  color: green;
+  margin-bottom: 8px;
+}
+
+.error {
+  color: red;
+  margin-bottom: 8px;
 }

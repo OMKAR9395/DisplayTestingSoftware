@@ -2,24 +2,23 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
-import { environment } from '../environment/environment.dev';
+import { environment } from '../environments/environment.prod'; 
 
 @Injectable({ providedIn: 'root' })
 export class PrinterService {
   // private api = environment.apiUrl;
-  private api = environment.apiUrl + '/send';
+  private baseUrl = environment.apiUrl + '/send';
 
   constructor(private http: HttpClient) {}
 
-  sendCommand(command: string) {
-    return this.http.post<any>(this.api, { text: command }).pipe(
-      catchError((error: HttpErrorResponse) => {
-        return throwError(() => error.error?.message || 'Server not reachable');
-      })
-    );
+  sendCommand(text: string) {
+    return this.http.post<any>(`${this.baseUrl}/send`, {
+      text
+    });
   }
-  getJobStatus(id: number) {
-  return this.http.get<any>(`${environment.apiUrl}/jobs/${id}`);
-}
 
+  // 2️⃣ Get job status
+  getJobStatus(jobId: number) {
+    return this.http.get<any>(`${this.baseUrl}/jobs/${jobId}`);
+  }
 }
