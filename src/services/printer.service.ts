@@ -7,7 +7,7 @@ import { environment } from '../environments/environment.prod';
 @Injectable({ providedIn: 'root' })
 export class PrinterService {
   // private api = environment.apiUrl;
-  private baseUrl = environment.apiUrl + '/send';
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
